@@ -36,7 +36,7 @@ npm run db:push
 npm run db:seed
 ```
 
-Soil appointment requests are stored in PostgreSQL when `DATABASE_URL` is set. Without a database, the booking endpoint returns a demo confirmation token that is not persisted. The seed script adds 14 days of sample price history for wheat, rice, cotton, tomato, and potato.
+Soil appointment requests are stored in PostgreSQL when `DATABASE_URL` is set. Without a database, the booking endpoint returns a demo confirmation token that is not persisted. For Vercel, add `DATABASE_URL` under the project's **Settings → Environment Variables** to enable persistent appointments; it can be omitted to use demo mode. The seed script adds 14 days of sample price history for wheat, rice, cotton, tomato, and potato.
 
 ## Included modules
 

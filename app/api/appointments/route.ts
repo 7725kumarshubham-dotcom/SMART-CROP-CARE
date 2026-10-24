@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
+import { getPrismaClient } from "@/lib/db";
 
 export async function POST(request: Request) {
   let body: {
@@ -31,8 +31,9 @@ export async function POST(request: Request) {
   }
 
   const token = `SC-${Date.now().toString().slice(-7)}`;
-  if (process.env.DATABASE_URL) {
-    try {
+  try {
+    const prisma = getPrismaClient();
+    if (prisma) {
       const user = await prisma.user.upsert({
         where: { phone },
         update: { name },
@@ -49,10 +50,10 @@ export async function POST(request: Request) {
         }
       });
       return NextResponse.json({ token: appointment.token, status: "confirmed", slot, persisted: true });
-    } catch (error) {
-      console.error("Soil appointment could not be saved:", error);
-      return NextResponse.json({ error: "We couldn't save your appointment. Please try again." }, { status: 500 });
     }
+  } catch (error) {
+    console.error("Soil appointment could not be saved:", error);
+    return NextResponse.json({ error: "We couldn't save your appointment. Please try again." }, { status: 500 });
   }
 
   return NextResponse.json({ token, status: "confirmed", slot, persisted: false });
