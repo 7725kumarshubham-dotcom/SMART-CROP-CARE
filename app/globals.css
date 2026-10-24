@@ -1,0 +1,384 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+  --green: #246b45;
+  --green-secondary: #3f8757;
+  --leaf: #83b85a;
+  --dark-green: #202b25;
+  --muted: #68756d;
+  --line: #e2e8e2;
+  --paper: #f6f8f5;
+  --surface-green: #eaf3e9;
+  --harvest: #d9a441;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--dark-green);
+  background: var(--paper);
+  font-family: var(--font-inter), "Segoe UI Variable", "Aptos", "Segoe UI", system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 450;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+  transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+[class~="font-bold"] {
+  font-weight: 700;
+}
+
+[class~="font-semibold"] {
+  font-weight: 600;
+}
+
+[class~="font-medium"] {
+  font-weight: 500;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+  letter-spacing: -0.025em;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #9bd3ad;
+  outline-offset: 2px;
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.app-shell {
+  background:
+    radial-gradient(ellipse at 88% 0%, rgba(234, 242, 230, 0.55), transparent 30rem),
+    var(--paper);
+}
+
+.app-shell aside {
+  background: #fff;
+  box-shadow: 8px 0 32px rgba(32, 43, 36, 0.035);
+}
+
+.app-header {
+  isolation: isolate;
+}
+
+.app-header::before {
+  position: absolute;
+  z-index: -1;
+  background: linear-gradient(90deg, #246b45 0%, #3f8757 52%, rgba(131, 184, 90, 0.35) 100%);
+  content: "";
+  height: 2px;
+  inset: 0 0 auto;
+}
+
+.app-shell [class*="rounded-2xl"][class*="border"][class*="bg-white"] {
+  border-color: var(--line);
+  box-shadow: 0 8px 24px rgba(32, 43, 36, 0.045);
+}
+
+.app-shell [class*="bg-[#14804a]"] {
+  background-color: var(--green);
+}
+
+.app-shell [class*="text-[#14804a]"],
+.app-shell [class*="text-[#147343]"] {
+  color: var(--green);
+}
+
+.app-shell [class*="bg-[#eaf5ec]"],
+.app-shell [class*="bg-[#eaf5eb]"],
+.app-shell [class*="bg-[#f0f7ee]"],
+.app-shell [class*="bg-[#f1f7ef]"],
+.app-shell [class*="bg-[#eff6ec]"] {
+  background-color: var(--surface-green);
+}
+
+.app-shell button[class*="bg-[#14804a]"]:hover {
+  background-color: #19492d;
+}
+
+.app-shell button[class*="text-[#14804a]"]:hover {
+  color: #19492d;
+}
+
+.planner-photo {
+  min-height: 176px;
+}
+
+.planner-photo-overlay {
+  background: linear-gradient(90deg, rgba(23, 59, 43, 0.9), rgba(36, 92, 58, 0.52) 68%, rgba(36, 92, 58, 0.16));
+}
+
+.shop-photo-overlay {
+  background: linear-gradient(90deg, rgba(23, 59, 43, 0.84), rgba(36, 92, 58, 0.38) 75%, rgba(36, 92, 58, 0.18));
+}
+
+.upload-dropzone {
+  background:
+    linear-gradient(rgba(246, 250, 245, 0.91), rgba(246, 250, 245, 0.91)),
+    url("https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1000&q=75") center / cover;
+}
+
+html[data-theme="dark"] .upload-dropzone {
+  background:
+    linear-gradient(rgba(26, 38, 30, 0.9), rgba(26, 38, 30, 0.9)),
+    url("https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1000&q=75") center / cover;
+}
+
+.app-shell [class*="shadow-sm"] {
+  box-shadow: 0 8px 24px rgba(32, 43, 36, 0.045);
+}
+
+.app-shell input::placeholder {
+  color: #89958c;
+}
+
+.hero-banner {
+  isolation: isolate;
+  background: linear-gradient(112deg, #173b2b 0%, #245c3a 58%, #3f8554 100%);
+}
+
+.hero-banner::after {
+  position: absolute;
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(17, 43, 29, 0.92) 0%, rgba(25, 62, 39, 0.82) 58%, rgba(25, 62, 39, 0.2) 100%);
+  content: "";
+  inset: 0;
+}
+
+.hero-banner img {
+  position: absolute;
+  z-index: -2;
+  height: 100%;
+  inset: 0;
+  object-fit: cover;
+  object-position: center 58%;
+  max-width: none;
+  width: 130%;
+}
+
+.crop-photo img {
+  height: 100%;
+  object-fit: cover;
+  transition: transform 300ms ease;
+  width: 100%;
+}
+
+.crop-card:hover .crop-photo img {
+  transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --green: #62a77a;
+  --green-secondary: #7db58a;
+  --leaf: #a8cf7d;
+  --dark-green: #e8f0e9;
+  --muted: #a5b3a8;
+  --line: #304037;
+  --paper: #111914;
+  --surface-green: #203328;
+  --harvest: #e5b34b;
+}
+
+html[data-theme="dark"] body {
+  color: #e3ebe4;
+  background: var(--paper);
+}
+
+html[data-theme="dark"] .app-shell {
+  color: #e3ebe4;
+  background:
+    radial-gradient(ellipse at 88% 0%, rgba(41, 75, 52, 0.16), transparent 32rem),
+    #111914;
+}
+
+html[data-theme="dark"] .app-shell aside,
+html[data-theme="dark"] .app-shell header {
+  background-color: #17221b !important;
+  border-color: #2d3b31 !important;
+}
+
+html[data-theme="dark"] .app-header::before {
+  background: linear-gradient(90deg, #34764b 0%, #62a77a 52%, rgba(168, 207, 125, 0.45) 100%);
+}
+
+html[data-theme="dark"] .app-shell .app-header button:hover {
+  background-color: #203328;
+}
+
+html[data-theme="dark"] .app-shell .app-header [class*="bg-[#EAF3E9]"],
+html[data-theme="dark"] .app-shell .app-header [class*="bg-[#F6F8F5]"],
+html[data-theme="dark"] .app-shell .app-header [class*="bg-[#f2f4f0]"] {
+  background-color: #203328 !important;
+}
+
+html[data-theme="dark"] .app-shell [class~="bg-white"],
+html[data-theme="dark"] .app-shell [class*="bg-white/"],
+html[data-theme="dark"] .app-shell [class*="bg-[#f"],
+html[data-theme="dark"] .app-shell [class*="bg-[#e"] {
+  background-color: #1a261e !important;
+}
+
+html[data-theme="dark"] .app-shell [class*="rounded-2xl"][class*="border"][class*="bg-white"],
+html[data-theme="dark"] .app-shell article,
+html[data-theme="dark"] .app-shell [role="dialog"] > form {
+  background-color: #1a261e !important;
+  border-color: #304037 !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+}
+
+html[data-theme="dark"] .app-shell [class*="border-[#e"],
+html[data-theme="dark"] .app-shell [class*="border-[#d"],
+html[data-theme="dark"] .app-shell [class*="divide-[#e"] {
+  border-color: #304037 !important;
+}
+
+html[data-theme="dark"] .app-shell [class*="text-[#8"],
+html[data-theme="dark"] .app-shell [class*="text-[#7"],
+html[data-theme="dark"] .app-shell [class*="text-[#6"],
+html[data-theme="dark"] .app-shell [class*="text-[#5"],
+html[data-theme="dark"] .app-shell [class*="text-[#4"],
+html[data-theme="dark"] .app-shell [class*="text-[#3"],
+html[data-theme="dark"] .app-shell [class*="text-[#2"],
+html[data-theme="dark"] .app-shell [class*="text-[#1"] {
+  color: #c0cdc2 !important;
+}
+
+html[data-theme="dark"] .app-shell [class*="text-[#14804a]"],
+html[data-theme="dark"] .app-shell [class*="text-[#147343]"],
+html[data-theme="dark"] .app-shell [class*="text-[#245C3A]"],
+html[data-theme="dark"] .app-shell [class*="text-[#3F8554]"],
+html[data-theme="dark"] .app-shell [class*="text-[#258654]"] {
+  color: #8fc59a !important;
+}
+
+html[data-theme="dark"] .app-shell h1,
+html[data-theme="dark"] .app-shell h2,
+html[data-theme="dark"] .app-shell h3,
+html[data-theme="dark"] .app-shell h4 {
+  color: #edf3ed;
+}
+
+html[data-theme="dark"] .app-shell button[class*="bg-[#14804a]"],
+html[data-theme="dark"] .app-shell button[class*="bg-[#176c43]"] {
+  background-color: #34764b !important;
+  color: #f3f7f3 !important;
+}
+
+html[data-theme="dark"] .app-shell .hero-banner button.bg-white {
+  background-color: #edf4eb !important;
+  color: #1b402a !important;
+}
+
+html[data-theme="dark"] .app-shell .hero-banner button[class*="border-white"] {
+  background-color: rgba(18, 34, 24, 0.52) !important;
+  border-color: rgba(239, 246, 239, 0.52) !important;
+  color: #f3f7f3 !important;
+}
+
+html[data-theme="dark"] .app-shell [class*="bg-[#fff8e9]"],
+html[data-theme="dark"] .app-shell [class*="bg-[#fff4e5]"],
+html[data-theme="dark"] .app-shell [class*="bg-[#fff5df]"] {
+  background-color: #382f1b !important;
+}
+
+html[data-theme="dark"] .app-shell [class*="text-[#755c2d]"],
+html[data-theme="dark"] .app-shell [class*="text-[#8E671D]"],
+html[data-theme="dark"] .app-shell [class*="text-[#9a651b]"] {
+  color: #e5c579 !important;
+}
+
+html[data-theme="dark"] .app-shell .hero-banner::after {
+  background: linear-gradient(90deg, rgba(12, 29, 19, 0.92) 0%, rgba(18, 42, 26, 0.78) 58%, rgba(18, 42, 26, 0.28) 100%);
+}
+
+html[data-theme="dark"] .app-shell .planner-photo-overlay {
+  background: linear-gradient(90deg, rgba(13, 31, 20, 0.88), rgba(20, 47, 29, 0.6) 68%, rgba(20, 47, 29, 0.3));
+}
+
+html[data-theme="dark"] .app-shell .shop-photo-overlay {
+  background: linear-gradient(90deg, rgba(13, 31, 20, 0.84), rgba(20, 47, 29, 0.52) 75%, rgba(20, 47, 29, 0.3));
+}
+
+html[data-theme="dark"] .app-shell .crop-photo img,
+html[data-theme="dark"] .app-shell article > img,
+html[data-theme="dark"] .app-shell article > div > img {
+  filter: brightness(0.82) saturate(0.88);
+}
+
+html[data-theme="dark"] .app-shell input,
+html[data-theme="dark"] .app-shell select,
+html[data-theme="dark"] .app-shell textarea {
+  color: #e3ebe4;
+  background-color: #17231b;
+  border-color: #3a4b3f;
+}
+
+html[data-theme="dark"] .app-shell input::placeholder,
+html[data-theme="dark"] .app-shell textarea::placeholder {
+  color: #98a99b;
+}
+
+html[data-theme="dark"] .app-shell option {
+  color: #e3ebe4;
+  background: #17231b;
+}
+
+html[data-theme="dark"] .app-shell [class*="shadow-"] {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.24);
+}
+
+html[data-theme="dark"] .app-shell button:focus-visible,
+html[data-theme="dark"] .app-shell input:focus-visible,
+html[data-theme="dark"] .app-shell select:focus-visible,
+html[data-theme="dark"] .app-shell textarea:focus-visible {
+  outline-color: #8fc59a;
+}
