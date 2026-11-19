@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { indianStates } from "@/lib/india-locations";
+import { indianStates } from "@/frontend/data/india-locations";
 
 const geocoderStateNames: Record<string, string> = {
   "andaman and nicobar islands": "andaman and nicobar",

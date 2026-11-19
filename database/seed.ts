@@ -33,16 +33,31 @@ async function main() {
     })
   );
 
-  await prisma.mandiPriceRecord.deleteMany();
-  await prisma.mandiPriceRecord.createMany({ data: history });
-  await prisma.procurementItem.createMany({
-    skipDuplicates: true,
-    data: [
-      { name: "Certified wheat seeds", category: "Seeds", description: "HD 2967 · 40 kg bag", price: 1850, unit: "bag", certified: true },
-      { name: "Neem-based bio-fertilizer", category: "Fertilizer", description: "Organic · 5 litre pack", price: 690, unit: "pack", certified: true },
-      { name: "Drip irrigation starter kit", category: "Irrigation", description: "For up to 1 acre", price: 4290, unit: "kit", certified: false }
-    ]
-  });
+  for (const record of history) {
+    await prisma.mandiPriceRecord.upsert({
+      where: {
+        commodity_variety_state_district_market_recordedAt: {
+          commodity: record.commodity,
+          variety: record.variety,
+          state: record.state,
+          district: record.district,
+          market: record.market,
+          recordedAt: record.recordedAt
+        }
+      },
+      create: record,
+      update: {}
+    });
+  }
+  const procurementItems = [
+    { name: "Certified wheat seeds", category: "Seeds", description: "HD 2967 · 40 kg bag", price: 1850, unit: "bag", certified: true },
+    { name: "Neem-based bio-fertilizer", category: "Fertilizer", description: "Organic · 5 litre pack", price: 690, unit: "pack", certified: true },
+    { name: "Drip irrigation starter kit", category: "Irrigation", description: "For up to 1 acre", price: 4290, unit: "kit", certified: false }
+  ];
+  for (const item of procurementItems) {
+    const existing = await prisma.procurementItem.findFirst({ where: { name: item.name } });
+    if (!existing) await prisma.procurementItem.create({ data: item });
+  }
   console.log(`Seeded ${history.length} mandi price records and 3 procurement items.`);
 }
 

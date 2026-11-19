@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { getPrismaClient } from "@/lib/db";
+import { getCurrentUser } from "@/backend/auth";
+import { getPrismaClient } from "@/backend/db";
 
 export async function POST(request: Request) {
   let body: {
@@ -30,31 +31,33 @@ export async function POST(request: Request) {
     );
   }
 
+  const user = await getCurrentUser();
+  if (!user) {
+    return NextResponse.json({ error: "Please sign in before requesting an appointment." }, { status: 401 });
+  }
+  if (user.phone !== phone) {
+    return NextResponse.json({ error: "Use the mobile number saved with your account to book this appointment." }, { status: 400 });
+  }
+
   const token = `SC-${Date.now().toString().slice(-7)}`;
   try {
     const prisma = getPrismaClient();
-    if (prisma) {
-      const user = await prisma.user.upsert({
-        where: { phone },
-        update: { name },
-        create: { phone, name }
-      });
-      const appointment = await prisma.soilTestBooking.create({
-        data: {
-          userId: user.id,
-          crop,
-          visitType: body.visitType === "pickup" ? "PICKUP" : "LAB_VISIT",
-          date: new Date(`${date}T${slot.slice(0, 2)}:00:00`),
-          lab,
-          token
-        }
-      });
-      return NextResponse.json({ token: appointment.token, status: "confirmed", slot, persisted: true });
+    if (!prisma) {
+      return NextResponse.json({ error: "The local database is not configured." }, { status: 503 });
     }
+    const appointment = await prisma.soilTestBooking.create({
+      data: {
+        userId: user.id,
+        crop,
+        visitType: body.visitType === "pickup" ? "PICKUP" : "LAB_VISIT",
+        date: new Date(`${date}T${slot.slice(0, 2)}:00:00`),
+        lab,
+        token
+      }
+    });
+    return NextResponse.json({ token: appointment.token, status: "confirmed", slot, persisted: true });
   } catch (error) {
     console.error("Soil appointment could not be saved:", error);
     return NextResponse.json({ error: "We couldn't save your appointment. Please try again." }, { status: 500 });
   }
-
-  return NextResponse.json({ token, status: "confirmed", slot, persisted: false });
 }

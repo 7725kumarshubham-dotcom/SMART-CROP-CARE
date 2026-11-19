@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getGeminiModel, getGeminiProviderError, getGeminiText } from "@/backend/gemini";
 
 const sampleReply =
   "I can help with that. Check your local weather before spraying or irrigating, and confirm crop treatments with your nearest Krishi Vigyan Kendra (KVK) or agriculture officer.";
@@ -25,19 +26,22 @@ export async function POST(request: Request) {
   if (!key) return NextResponse.json({ answer: sampleReply, source: "sample" });
 
   try {
+    const model = getGeminiModel();
     const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-goog-api-key": key },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: `You are a careful agricultural information assistant for Indian farmers. Answer simply and concisely in ${language}. Do not invent pesticide dosage or guarantee diagnoses; recommend a local KVK or agriculture officer when appropriate. Question: ${question}` }] }]
+          contents: [{ parts: [{ text: `You are a careful agricultural information assistant for Indian farmers. Respond exclusively in ${language}, regardless of the language used in the question. Answer simply and concisely. Do not invent pesticide dosage or guarantee diagnoses; recommend a local KVK or agriculture officer when appropriate. Question: ${question}` }] }]
         })
       }
     );
-    if (!response.ok) throw new Error("The AI provider returned an unsuccessful response.");
-    const payload = await response.json();
-    const answer = payload.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!response.ok) {
+      console.error(`Gemini agronomist assistant request failed with HTTP ${response.status}.`);
+      return NextResponse.json({ error: getGeminiProviderError(response.status) }, { status: 503 });
+    }
+    const answer = getGeminiText(await response.json());
     if (typeof answer !== "string" || !answer.trim()) throw new Error("The AI provider returned an empty answer.");
     return NextResponse.json({ answer, source: "gemini" });
   } catch (error) {

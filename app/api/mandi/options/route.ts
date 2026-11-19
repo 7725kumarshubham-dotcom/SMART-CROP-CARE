@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { mandiSample } from "@/lib/mock-data";
+import { mandiSample } from "@/backend/data/mock-data";
 
 type MarketOptionRecord = {
   commodity?: string;
@@ -25,8 +25,8 @@ export async function GET(request: Request) {
 
   let records: MarketOptionRecord[];
   let source: "sample" | "data.gov.in" = "sample";
-  const key = process.env.DATA_GOV_IN_API_KEY;
-  const resourceId = process.env.DATA_GOV_IN_RESOURCE_ID;
+  const key = process.env.DATA_GOV_IN_API_KEY || process.env.DATA_GOV_API_KEY;
+  const resourceId = process.env.DATA_GOV_IN_RESOURCE_ID || process.env.MANDI_RESOURCE_ID;
 
   if (key && resourceId) {
     try {

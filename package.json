@@ -6,29 +6,32 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "postinstall": "prisma generate",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
-    "db:seed": "tsx prisma/seed.ts"
+    "postinstall": "prisma generate --schema database/schema.prisma",
+    "db:generate": "prisma generate --schema database/schema.prisma",
+    "db:push": "prisma db push --schema database/schema.prisma",
+    "db:seed": "tsx database/seed.ts",
+    "mandi:sync": "tsx backend/jobs/sync-mandi.ts"
   },
   "prisma": {
-    "seed": "tsx prisma/seed.ts"
+    "schema": "database/schema.prisma",
+    "seed": "tsx database/seed.ts"
   },
   "dependencies": {
-    "@prisma/client": "^5.22.0",
+    "@prisma/client": "5.22.0",
+    "bcryptjs": "^3.0.3",
     "lucide-react": "^0.468.0",
-    "next": "^16.4.2",
+    "next": "16.4.6",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "recharts": "^2.15.0"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
     "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^22.10.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "postcss": "^8.5.24",
-    "prisma": "^5.22.0",
+    "prisma": "5.22.0",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"

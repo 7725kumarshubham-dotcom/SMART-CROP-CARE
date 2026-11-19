@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { mandiSample } from "@/lib/mock-data";
+import { mandiSample } from "@/backend/data/mock-data";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -12,8 +12,8 @@ export async function GET(request: Request) {
   const parsedOffset = Number(searchParams.get("offset") ?? 0);
   const limit = Number.isInteger(parsedLimit) ? Math.min(Math.max(parsedLimit, 1), 1000) : 50;
   const offset = Number.isInteger(parsedOffset) ? Math.max(parsedOffset, 0) : 0;
-  const key = process.env.DATA_GOV_IN_API_KEY;
-  const resourceId = process.env.DATA_GOV_IN_RESOURCE_ID;
+  const key = process.env.DATA_GOV_IN_API_KEY || process.env.DATA_GOV_API_KEY;
+  const resourceId = process.env.DATA_GOV_IN_RESOURCE_ID || process.env.MANDI_RESOURCE_ID;
 
   if ([crop, state, district, market, search].some((value) => value.length > 100)) {
     return NextResponse.json({ error: "Market filters must be 100 characters or fewer." }, { status: 400 });
