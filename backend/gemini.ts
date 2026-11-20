@@ -7,7 +7,7 @@ export function getGeminiProviderError(status: number) {
     return "Gemini rejected the API key. Check GEMINI_API_KEY and the key's API access.";
   }
   if (status === 404) {
-    return "The configured Gemini model was not found. Check GEMINI_MODEL in .env.";
+    return "The configured Gemini model was not found. Check GEMINI_MODEL in your deployment environment.";
   }
   if (status === 429) {
     return "Gemini's request limit or quota was reached. Check the project quota and try again later.";

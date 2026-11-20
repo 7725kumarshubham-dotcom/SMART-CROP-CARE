@@ -159,8 +159,18 @@ export async function POST(request: Request) {
         }
       );
       if (!response.ok) {
-        console.error(`Gemini crop diagnosis request failed with HTTP ${response.status}.`);
-        return NextResponse.json({ error: getGeminiProviderError(response.status) }, { status: 503 });
+        const errorBody = await response.text();
+
+        console.error("Gemini API error:", {
+          status: response.status,
+          model,
+          details: errorBody.slice(0, 1500)
+        });
+
+        return NextResponse.json(
+          { error: getGeminiProviderError(response.status) },
+          { status: 503 }
+        );
       }
       const text = getGeminiText(await response.json());
       if (!text) throw new Error("The vision provider returned an empty diagnosis.");

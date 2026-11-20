@@ -43,7 +43,7 @@ Create-account requires a full name, 10-digit Indian mobile number, email, and a
 
 ## Deploying on Vercel
 
-Create a PostgreSQL database with Neon, then add `DATABASE_URL` (the pooled URL) and `DIRECT_URL` (the direct URL) in the Vercel project's environment variables for each environment you deploy. Run `npm run db:push` locally with those values in `.env` to create the tables in the database, then redeploy on Vercel. Do not expose either URL in client-side code or commit them to the repository.
+Create a PostgreSQL database with Neon, then add `DATABASE_URL` (the pooled URL) and `DIRECT_URL` (the direct URL) in the Vercel project's environment variables for each environment you deploy. Run `npm run db:push` locally with those values in `.env` to create the tables in the database. For Gemini features, also add `GEMINI_API_KEY` and `GEMINI_MODEL` to Vercel's environment variables; `gemini-3.8-flash` is the default model. Redeploy after setting or changing environment variables. Do not expose secrets in client-side code or commit them to the repository.
 
 The app's prior local SQLite database is not copied to PostgreSQL automatically. Existing local accounts and records remain in the SQLite files and require a separate migration if they need to be retained.
 
