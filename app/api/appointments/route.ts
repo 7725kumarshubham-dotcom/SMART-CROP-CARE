@@ -43,7 +43,7 @@ export async function POST(request: Request) {
   try {
     const prisma = getPrismaClient();
     if (!prisma) {
-      return NextResponse.json({ error: "The local database is not configured." }, { status: 503 });
+      return NextResponse.json({ error: "The database is not configured. Set DATABASE_URL and redeploy the app." }, { status: 503 });
     }
     const appointment = await prisma.soilTestBooking.create({
       data: {

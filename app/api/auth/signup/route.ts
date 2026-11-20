@@ -48,7 +48,7 @@ export async function POST(request: Request) {
 
   const prisma = getPrismaClient();
   if (!prisma) {
-    return NextResponse.json({ error: "The local database is not configured. Restart the app after setting DATABASE_URL." }, { status: 503 });
+    return NextResponse.json({ error: "The database is not configured. Set DATABASE_URL and redeploy the app." }, { status: 503 });
   }
 
   const sessionToken = createSessionToken();

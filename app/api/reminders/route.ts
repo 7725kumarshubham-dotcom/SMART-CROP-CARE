@@ -37,7 +37,7 @@ export async function GET() {
   if (!user) return NextResponse.json({ error: "Please sign in to view your reminders." }, { status: 401 });
 
   const prisma = getPrismaClient();
-  if (!prisma) return NextResponse.json({ error: "The local database is not configured." }, { status: 503 });
+  if (!prisma) return NextResponse.json({ error: "The database is not configured. Set DATABASE_URL and redeploy the app." }, { status: 503 });
 
   try {
     const reminders = await prisma.farmReminder.findMany({
@@ -81,7 +81,7 @@ export async function POST(request: Request) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "Please sign in to save a reminder." }, { status: 401 });
   const prisma = getPrismaClient();
-  if (!prisma) return NextResponse.json({ error: "The local database is not configured." }, { status: 503 });
+  if (!prisma) return NextResponse.json({ error: "The database is not configured. Set DATABASE_URL and redeploy the app." }, { status: 503 });
 
   try {
     const reminder = await prisma.farmReminder.create({
@@ -109,7 +109,7 @@ export async function PATCH(request: Request) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "Please sign in to update a reminder." }, { status: 401 });
   const prisma = getPrismaClient();
-  if (!prisma) return NextResponse.json({ error: "The local database is not configured." }, { status: 503 });
+  if (!prisma) return NextResponse.json({ error: "The database is not configured. Set DATABASE_URL and redeploy the app." }, { status: 503 });
 
   try {
     const result = await prisma.farmReminder.updateMany({
@@ -139,7 +139,7 @@ export async function DELETE(request: Request) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "Please sign in to delete a reminder." }, { status: 401 });
   const prisma = getPrismaClient();
-  if (!prisma) return NextResponse.json({ error: "The local database is not configured." }, { status: 503 });
+  if (!prisma) return NextResponse.json({ error: "The database is not configured. Set DATABASE_URL and redeploy the app." }, { status: 503 });
 
   try {
     const result = await prisma.farmReminder.deleteMany({ where: { id: body.id, userId: user.id } });

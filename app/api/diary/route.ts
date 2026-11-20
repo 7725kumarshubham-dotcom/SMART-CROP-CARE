@@ -27,7 +27,7 @@ export async function GET() {
   if (!user) return NextResponse.json({ error: "Please sign in to view your crop diary." }, { status: 401 });
 
   const prisma = getPrismaClient();
-  if (!prisma) return NextResponse.json({ error: "The local database is not configured." }, { status: 503 });
+  if (!prisma) return NextResponse.json({ error: "The database is not configured. Set DATABASE_URL and redeploy the app." }, { status: 503 });
 
   try {
     const entries = await prisma.cropDiaryEntry.findMany({
@@ -80,7 +80,7 @@ export async function POST(request: Request) {
   if (!user) return NextResponse.json({ error: "Please sign in to save a crop diary entry." }, { status: 401 });
 
   const prisma = getPrismaClient();
-  if (!prisma) return NextResponse.json({ error: "The local database is not configured." }, { status: 503 });
+  if (!prisma) return NextResponse.json({ error: "The database is not configured. Set DATABASE_URL and redeploy the app." }, { status: 503 });
 
   try {
     const entry = await prisma.cropDiaryEntry.create({

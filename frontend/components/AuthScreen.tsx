@@ -151,7 +151,7 @@ export default function AuthScreen({ initialMode = "welcome" }: { initialMode?: 
                     Sign in
                   </button>
                 </div>
-                <p className="mt-6 text-center text-xs leading-5 text-[#8a978f]">Your account stays on this device and does not require email verification.</p>
+                <p className="mt-6 text-center text-xs leading-5 text-[#8a978f]">Your account does not require email verification.</p>
               </>
             ) : (
               <>
@@ -162,14 +162,14 @@ export default function AuthScreen({ initialMode = "welcome" }: { initialMode?: 
                 <p className="mt-2 text-sm leading-6 text-[#718076]">
                   {mode === "signup" ? "Your local guidance and farm tools are just a few details away." :
                     mode === "signin" ? "Sign in to continue to your Smart Crop Care dashboard." :
-                      "Password recovery works differently for local accounts."}
+                      "Password recovery works differently for accounts without email verification."}
                 </p>
 
                 {errorMessage && <p role="alert" className="mt-5 rounded-xl border border-[#f0d2cf] bg-[#fff5f3] p-3 text-sm leading-5 text-[#9b3d33]">{errorMessage}</p>}
 
                 {mode === "forgot" ? (
                   <div className="mt-6 rounded-xl border border-[#dce6dc] bg-[#f6faf5] p-4 text-sm leading-6 text-[#52675a]" role="status">
-                    Local sign-in does not send reset emails. If you forget this password, ask the device administrator to reset your local account.
+                    Sign-in does not send reset emails. If you forget this password, ask the database administrator to reset your account.
                   </div>
                 ) : <form onSubmit={(event) => void submit(event)} className="mt-6 space-y-4">
                   {mode === "signup" && (
