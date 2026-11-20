@@ -74,3 +74,4 @@ npm run mandi:sync
 ```
 
 Run `npm run mandi:sync` once each day using Windows Task Scheduler. The trend chart uses saved daily records once at least two dates have been collected. `MANDI_SYNC_LIMIT` controls how many current official records are saved per run (default 1000).
+Deployment update for SMART-CROP-CARE
