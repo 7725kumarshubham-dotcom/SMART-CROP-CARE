@@ -64,6 +64,9 @@ function AuthScreen({ initialMode = "welcome", onAuthenticated }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(mode === "signup" ? { name, email, phone, password, confirmPassword } : { email, password })
       });
+      if (!(response.headers.get("content-type") || "").includes("application/json")) {
+        throw new Error("Sign-in is temporarily unavailable. Please try again shortly.");
+      }
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "We couldn't complete that request. Please try again.");
       if (typeof onAuthenticated === "function") {

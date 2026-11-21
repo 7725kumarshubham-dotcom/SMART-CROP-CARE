@@ -984,7 +984,15 @@ app.delete("/api/mandi/alerts", async (req, res) => {
   res.json({ deleted: true });
 });
 
-if (process.env.NODE_ENV === "production") {
+app.use("/api", (req, res) => res.status(404).json({ error: "API endpoint not found." }));
+
+app.use((error, req, res, next) => {
+  console.error("API request failed:", error);
+  if (res.headersSent) return next(error);
+  res.status(error.status || 500).json({ error: "The request could not be completed. Please try again." });
+});
+
+if (process.env.NODE_ENV === "production" && !process.env.VERCEL) {
   app.use(express.static(path.join(root, "dist")));
   app.use((req, res, next) => {
     if (req.method === "GET" && !req.path.startsWith("/api/")) {
@@ -994,6 +1002,8 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.listen(port, () => {
-  console.log(`Express API listening on http://localhost:${port}`);
-});
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  app.listen(port, () => console.log(`Express API listening on http://localhost:${port}`));
+}
+
+export default app;
