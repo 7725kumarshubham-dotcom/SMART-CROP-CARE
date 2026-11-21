@@ -2,38 +2,45 @@
   "name": "smart-crop-care",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "concurrently -k \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:client": "vite --config vite.config.js",
+    "dev:server": "node --watch server/index.js",
+    "build": "vite build --config vite.config.js",
+    "start": "cross-env NODE_ENV=production node server/index.js",
     "postinstall": "prisma generate --schema database/schema.prisma",
     "db:generate": "prisma generate --schema database/schema.prisma",
     "db:push": "prisma db push --schema database/schema.prisma",
-    "db:seed": "tsx database/seed.ts",
-    "mandi:sync": "tsx backend/jobs/sync-mandi.ts"
+    "db:seed": "node database/seed.js",
+    "mandi:sync": "node server/jobs/sync-mandi.js"
   },
   "prisma": {
     "schema": "database/schema.prisma",
-    "seed": "tsx database/seed.ts"
+    "seed": "node database/seed.js"
   },
   "dependencies": {
     "@prisma/client": "5.22.0",
     "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
     "lucide-react": "^0.468.0",
-    "next": "16.4.6",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
+    "react-router-dom": "^7.9.6",
     "recharts": "^2.15.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
-    "@types/node": "^22.10.2",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "@vitejs/plugin-react": "^5.0.4",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
     "postcss": "^8.5.24",
     "prisma": "5.22.0",
     "tailwindcss": "^4.3.3",
-    "tsx": "^4.19.2",
-    "typescript": "^5.7.2"
+    "vite": "^7.1.12"
   }
 }

@@ -34,7 +34,7 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  if (url.pathname.startsWith("/_next/static/")) {
+  if (url.pathname.startsWith("/assets/")) {
     event.respondWith(
       fetch(request)
         .then((response) => {
