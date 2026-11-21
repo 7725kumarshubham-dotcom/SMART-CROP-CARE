@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { compare, hash } from "bcryptjs";
 import { Prisma } from "@prisma/client";
 
-import { getPrismaClient } from "./db.js";
+import { getPrismaClient, databaseErrorResponse } from "./db.js";
 import { mandiSample, weatherSample } from "./mock-data.js";
 import {
   authCookieName,
@@ -95,7 +95,8 @@ app.post("/api/auth/signup", async (req, res) => {
       return res.status(409).json({ error: "An account already uses this email address or mobile number." });
     }
     console.error("Account creation failed:", error);
-    return res.status(500).json({ error: "We couldn't create your account. Please try again." });
+    const failure = databaseErrorResponse(error, "We couldn't create your account. Please try again.");
+    return res.status(failure.status).json(failure.body);
   }
 });
 
@@ -122,7 +123,8 @@ app.post("/api/auth/signin", async (req, res) => {
     return res.json({ user: { id: user.id, name: user.name, phone: user.phone, email: user.email } });
   } catch (error) {
     console.error("Sign-in failed:", error);
-    return res.status(500).json({ error: "We couldn't sign you in. Please try again." });
+    const failure = databaseErrorResponse(error, "We couldn't sign you in. Please try again.");
+    return res.status(failure.status).json(failure.body);
   }
 });
 

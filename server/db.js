@@ -11,3 +11,24 @@ export function getPrismaClient() {
   }
   return globalForPrisma.prisma;
 }
+
+// Return actionable database errors without exposing connection strings or query data.
+export function databaseErrorResponse(error, fallback) {
+  const code = error?.code || error?.errorCode;
+  if (["P1000", "P1010"].includes(code)) {
+    return { status: 503, body: { error: "The server cannot access the database. The site administrator needs to check the production database credentials.", code: "DATABASE_ACCESS_DENIED" } };
+  }
+  if (["P1001", "P1002", "P1008", "P1017", "P2024"].includes(code)) {
+    return { status: 503, body: { error: "The server cannot connect to the database. Please try again shortly. If this continues, the site administrator needs to check the production database connection.", code: "DATABASE_UNAVAILABLE" } };
+  }
+  if (["P2021", "P2022"].includes(code)) {
+    return { status: 503, body: { error: "The production database needs to be updated before sign-in can work. Please contact the site administrator.", code: "DATABASE_SCHEMA_MISSING" } };
+  }
+  if (["P1012", "P1013"].includes(code)) {
+    return { status: 503, body: { error: "The production database configuration is invalid. Please contact the site administrator.", code: "DATABASE_CONFIGURATION_INVALID" } };
+  }
+  if (error?.name === "PrismaClientInitializationError") {
+    return { status: 503, body: { error: "The server could not initialize its database connection. Please contact the site administrator.", code: "DATABASE_INITIALIZATION_FAILED" } };
+  }
+  return { status: 500, body: { error: fallback, code: "AUTH_SERVICE_ERROR" } };
+}
